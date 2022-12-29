@@ -1,4 +1,4 @@
-import type { Plugin as VitePlugin } from "vite";
+import type { Plugin } from "vite";
 import type { Pluggable } from "unified";
 
 import { readFile } from "fs/promises";
@@ -9,7 +9,7 @@ import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
 
-type ViteUnifiedPluginOptions = {
+type PluginOptions = {
   remarkPlugins?: Pluggable[];
   rehypePlugins?: Pluggable[];
 };
@@ -17,7 +17,7 @@ type ViteUnifiedPluginOptions = {
 export default function vitePlugin({
   remarkPlugins = [],
   rehypePlugins = [],
-}: ViteUnifiedPluginOptions = {}): VitePlugin {
+}: PluginOptions = {}): Plugin {
   // unified plugin stack
   const unifiedPlugins = [
     remarkParse,
@@ -32,7 +32,7 @@ export default function vitePlugin({
   let rootPath = process.cwd();
 
   return {
-    name: "vite-remark-rehype-server",
+    name: "vite-plugin-remark-rehype",
 
     configResolved(config) {
       rootPath = config.root;
