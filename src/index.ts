@@ -1,5 +1,5 @@
 import type { Plugin } from "vite";
-import type { Pluggable } from "unified";
+import type { PluggableList } from "unified";
 
 import { readFile } from "fs/promises";
 import { join } from "path";
@@ -8,23 +8,32 @@ import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
+import type { Options as RemarkParseOptions } from "remark-parse";
+import type { Options as RemarkRehypeOptions } from "remark-rehype";
+import type { Options as RehypeStringifyOptions } from "rehype-stringify";
 
 type PluginOptions = {
-  remarkPlugins?: Pluggable[];
-  rehypePlugins?: Pluggable[];
+  remarkPlugins?: PluggableList;
+  rehypePlugins?: PluggableList;
+  remarkParseOptions?: RemarkParseOptions;
+  remarkRehypeOptions?: RemarkRehypeOptions; 
+  rehypeStringifyOptions?: RehypeStringifyOptions;
 };
 
 export default function vitePlugin({
   remarkPlugins = [],
   rehypePlugins = [],
+  remarkParseOptions = {},
+  remarkRehypeOptions = {},
+  rehypeStringifyOptions = {},
 }: PluginOptions = {}): Plugin {
   // unified plugin stack
-  const unifiedPlugins = [
-    remarkParse,
+  const unifiedPlugins: PluggableList = [
+    [remarkParse, remarkParseOptions],
     ...remarkPlugins,
-    remarkRehype,
+    [remarkRehype, remarkRehypeOptions],
     ...rehypePlugins,
-    rehypeStringify,
+    [rehypeStringify, rehypeStringifyOptions],
   ];
 
   const compiler = unified().use(unifiedPlugins);
