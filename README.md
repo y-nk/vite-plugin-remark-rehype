@@ -8,11 +8,11 @@ This plugin allows you to import markdown files, add remark/rehype plugins to pr
 
 ```ts
 import { defineConfig } from "vite";
-import vitePluginMiddleware from "vite-plugin-remark-rehype";
+import remarkRehypePlugin from "vite-plugin-remark-rehype";
 
 export default defineConfig({
   plugins: [
-    vitePluginMiddleware(),
+    remarkRehypePlugin(),
   ],
 });
 ```
@@ -24,7 +24,7 @@ In your `tsconfig.json`
 ```json
 {
   "compilerOptions": {
-    "types": ["vite-plugin-remark-rehyp/types"]
+    "types": ["vite-plugin-remark-rehype/types"]
   }
 }
 ```
@@ -42,14 +42,14 @@ declare module "*.md" {
 
 ```ts
 import { defineConfig } from "vite";
-import vitePluginMiddleware from "../dist";
+import remarkRehypePlugin from "vite-plugin-remark-rehype";
 
 import remarkA11yEmoji from "@fec/remark-a11y-emoji";
 import rehypeSanitize from "rehype-sanitize";
 
 export default defineConfig({
   plugins: [
-    vitePluginMiddleware({
+    remarkRehypePlugin({
       remarkPlugins: [remarkA11yEmoji],
       rehypePlugins: [rehypeSanitize],
     }),
